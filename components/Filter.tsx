@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { Slider } from "@mui/material";
+
 interface FilterProps {
   onFilterChange: (filters: {
     query: string;
@@ -16,6 +18,12 @@ export default function Filter({ onFilterChange }: FilterProps) {
   const [weather, setWeather] = useState("");
   const [genre, setGenre] = useState("");
   const [duration, setDuration] = useState("");
+
+  const [value, setValue] = useState<number[]>([10, 30]);
+
+  const handleChange = (event: Event, newValue: number | number[]) => {
+    setValue(newValue as number[]);
+  };
 
   const handleFilterChange = () => {
     onFilterChange({ query, weather, genre, duration });
@@ -60,6 +68,18 @@ export default function Filter({ onFilterChange }: FilterProps) {
         <option value="medium">Medium</option>
         <option value="long">Long</option>
       </select>
+      <div style={{ width: 300, margin: "20px auto" }}>
+        <Slider
+          value={value}
+          onChange={handleChange}
+          valueLabelDisplay="auto"
+          min={0}
+          max={60}
+        />
+        <p>
+          Selected Range: {value[0]} - {value[1]} minutes
+        </p>
+      </div>
       <button
         className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
         onClick={handleFilterChange}
